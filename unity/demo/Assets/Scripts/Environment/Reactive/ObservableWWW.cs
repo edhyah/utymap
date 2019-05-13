@@ -19,109 +19,109 @@ namespace Assets.Scripts.Environment.Reactive
 
     public static class ObservableWWW
     {
-        public static IObservable<string> Get(string url, Hash headers = null, IProgress<float> progress = null)
+        public static UtyRx.IObservable<string> Get(string url, Hash headers = null, UtyRx.IProgress<float> progress = null)
         {
             return ObservableUnity
-                .FromCoroutine<string>((observer, cancellation) => 
+                .FromCoroutine<string>((observer, cancellation) =>
                     FetchText(new WWW(url, null, (headers ?? new Hash())), observer, progress, cancellation))
                 .SubscribeOn(Scheduler.MainThread)
-                .Take(1); 
+                .Take(1);
         }
 
-        public static IObservable<byte[]> GetAndGetBytes(string url, Hash headers = null, IProgress<float> progress = null)
+        public static UtyRx.IObservable<byte[]> GetAndGetBytes(string url, Hash headers = null, UtyRx.IProgress<float> progress = null)
         {
             return ObservableUnity
-                .FromCoroutine<byte[]>((observer, cancellation) => 
+                .FromCoroutine<byte[]>((observer, cancellation) =>
                     FetchBytes(new WWW(url, null, (headers ?? new Hash())), observer, progress, cancellation))
                 .SubscribeOn(Scheduler.MainThread)
                 .Take(1);
         }
-        public static IObservable<WWW> GetWWW(string url, Hash headers = null, IProgress<float> progress = null)
+        public static UtyRx.IObservable<WWW> GetWWW(string url, Hash headers = null, UtyRx.IProgress<float> progress = null)
         {
             return ObservableUnity.FromCoroutine<WWW>((observer, cancellation) => Fetch(new WWW(url, null, (headers ?? new Hash())), observer, progress, cancellation));
         }
 
-        public static IObservable<string> Post(string url, byte[] postData, IProgress<float> progress = null)
+        public static UtyRx.IObservable<string> Post(string url, byte[] postData, UtyRx.IProgress<float> progress = null)
         {
             return ObservableUnity.FromCoroutine<string>((observer, cancellation) => FetchText(new WWW(url, postData), observer, progress, cancellation));
         }
 
-        public static IObservable<string> Post(string url, byte[] postData, Hash headers, IProgress<float> progress = null)
+        public static UtyRx.IObservable<string> Post(string url, byte[] postData, Hash headers, UtyRx.IProgress<float> progress = null)
         {
             return ObservableUnity.FromCoroutine<string>((observer, cancellation) => FetchText(new WWW(url, postData, headers), observer, progress, cancellation));
         }
 
-        public static IObservable<string> Post(string url, WWWForm content, IProgress<float> progress = null)
+        public static UtyRx.IObservable<string> Post(string url, WWWForm content, UtyRx.IProgress<float> progress = null)
         {
             return ObservableUnity.FromCoroutine<string>((observer, cancellation) => FetchText(new WWW(url, content), observer, progress, cancellation));
         }
 
-        public static IObservable<string> Post(string url, WWWForm content, Hash headers, IProgress<float> progress = null)
+        public static UtyRx.IObservable<string> Post(string url, WWWForm content, Hash headers, UtyRx.IProgress<float> progress = null)
         {
             var contentHeaders = content.headers;
             return ObservableUnity.FromCoroutine<string>((observer, cancellation) => FetchText(new WWW(url, content.data, MergeHash(contentHeaders, headers)), observer, progress, cancellation));
         }
 
-        public static IObservable<byte[]> PostAndGetBytes(string url, byte[] postData, IProgress<float> progress = null)
+        public static UtyRx.IObservable<byte[]> PostAndGetBytes(string url, byte[] postData, UtyRx.IProgress<float> progress = null)
         {
             return ObservableUnity.FromCoroutine<byte[]>((observer, cancellation) => FetchBytes(new WWW(url, postData), observer, progress, cancellation));
         }
 
-        public static IObservable<byte[]> PostAndGetBytes(string url, byte[] postData, Hash headers, IProgress<float> progress = null)
+        public static UtyRx.IObservable<byte[]> PostAndGetBytes(string url, byte[] postData, Hash headers, UtyRx.IProgress<float> progress = null)
         {
             return ObservableUnity.FromCoroutine<byte[]>((observer, cancellation) => FetchBytes(new WWW(url, postData, headers), observer, progress, cancellation));
         }
 
-        public static IObservable<byte[]> PostAndGetBytes(string url, WWWForm content, IProgress<float> progress = null)
+        public static UtyRx.IObservable<byte[]> PostAndGetBytes(string url, WWWForm content, UtyRx.IProgress<float> progress = null)
         {
             return ObservableUnity.FromCoroutine<byte[]>((observer, cancellation) => FetchBytes(new WWW(url, content), observer, progress, cancellation));
         }
 
-        public static IObservable<byte[]> PostAndGetBytes(string url, WWWForm content, Hash headers, IProgress<float> progress = null)
+        public static UtyRx.IObservable<byte[]> PostAndGetBytes(string url, WWWForm content, Hash headers, UtyRx.IProgress<float> progress = null)
         {
             var contentHeaders = content.headers;
             return ObservableUnity.FromCoroutine<byte[]>((observer, cancellation) => FetchBytes(new WWW(url, content.data, MergeHash(contentHeaders, headers)), observer, progress, cancellation));
         }
 
-        public static IObservable<WWW> PostWWW(string url, byte[] postData, IProgress<float> progress = null)
+        public static UtyRx.IObservable<WWW> PostWWW(string url, byte[] postData, UtyRx.IProgress<float> progress = null)
         {
             return ObservableUnity.FromCoroutine<WWW>((observer, cancellation) => Fetch(new WWW(url, postData), observer, progress, cancellation));
         }
 
-        public static IObservable<WWW> PostWWW(string url, byte[] postData, Hash headers, IProgress<float> progress = null)
+        public static UtyRx.IObservable<WWW> PostWWW(string url, byte[] postData, Hash headers, UtyRx.IProgress<float> progress = null)
         {
             return ObservableUnity.FromCoroutine<WWW>((observer, cancellation) => Fetch(new WWW(url, postData, headers), observer, progress, cancellation));
         }
 
-        public static IObservable<WWW> PostWWW(string url, WWWForm content, IProgress<float> progress = null)
+        public static UtyRx.IObservable<WWW> PostWWW(string url, WWWForm content, UtyRx.IProgress<float> progress = null)
         {
             return ObservableUnity.FromCoroutine<WWW>((observer, cancellation) => Fetch(new WWW(url, content), observer, progress, cancellation));
         }
 
-        public static IObservable<WWW> PostWWW(string url, WWWForm content, Hash headers, IProgress<float> progress = null)
+        public static UtyRx.IObservable<WWW> PostWWW(string url, WWWForm content, Hash headers, UtyRx.IProgress<float> progress = null)
         {
             var contentHeaders = content.headers;
             return ObservableUnity.FromCoroutine<WWW>((observer, cancellation) => Fetch(new WWW(url, content.data, MergeHash(contentHeaders, headers)), observer, progress, cancellation));
         }
 
-        public static IObservable<AssetBundle> LoadFromCacheOrDownload(string url, int version, IProgress<float> progress = null)
+        public static UtyRx.IObservable<AssetBundle> LoadFromCacheOrDownload(string url, int version, UtyRx.IProgress<float> progress = null)
         {
             return ObservableUnity.FromCoroutine<AssetBundle>((observer, cancellation) => FetchAssetBundle(WWW.LoadFromCacheOrDownload(url, version), observer, progress, cancellation));
         }
 
-        public static IObservable<AssetBundle> LoadFromCacheOrDownload(string url, int version, uint crc, IProgress<float> progress = null)
+        public static UtyRx.IObservable<AssetBundle> LoadFromCacheOrDownload(string url, int version, uint crc, UtyRx.IProgress<float> progress = null)
         {
             return ObservableUnity.FromCoroutine<AssetBundle>((observer, cancellation) => FetchAssetBundle(WWW.LoadFromCacheOrDownload(url, version, crc), observer, progress, cancellation));
         }
 
         // over Unity5 supports Hash128
 #if !(UNITY_4_6 || UNITY_4_5 || UNITY_4_4 || UNITY_4_3 || UNITY_4_2 || UNITY_4_1 || UNITY_4_0_1 || UNITY_4_0 || UNITY_3_5 || UNITY_3_4 || UNITY_3_3 || UNITY_3_2 || UNITY_3_1 || UNITY_3_0_0 || UNITY_3_0 || UNITY_2_6_1 || UNITY_2_6)
-        public static IObservable<AssetBundle> LoadFromCacheOrDownload(string url, Hash128 hash128, IProgress<float> progress = null)
+        public static UtyRx.IObservable<AssetBundle> LoadFromCacheOrDownload(string url, Hash128 hash128, UtyRx.IProgress<float> progress = null)
         {
             return ObservableUnity.FromCoroutine<AssetBundle>((observer, cancellation) => FetchAssetBundle(WWW.LoadFromCacheOrDownload(url, hash128), observer, progress, cancellation));
         }
 
-        public static IObservable<AssetBundle> LoadFromCacheOrDownload(string url, Hash128 hash128, uint crc, IProgress<float> progress = null)
+        public static UtyRx.IObservable<AssetBundle> LoadFromCacheOrDownload(string url, Hash128 hash128, uint crc, UtyRx.IProgress<float> progress = null)
         {
             return ObservableUnity.FromCoroutine<AssetBundle>((observer, cancellation) => FetchAssetBundle(WWW.LoadFromCacheOrDownload(url, hash128, crc), observer, progress, cancellation));
         }
@@ -156,7 +156,7 @@ namespace Assets.Scripts.Environment.Reactive
         }
 #endif
 
-        static IEnumerator Fetch(WWW www, IObserver<WWW> observer, IProgress<float> reportProgress, CancellationToken cancel)
+        static IEnumerator Fetch(WWW www, UtyRx.IObserver<WWW> observer, UtyRx.IProgress<float> reportProgress, CancellationToken cancel)
         {
             using (www)
             {
@@ -204,7 +204,7 @@ namespace Assets.Scripts.Environment.Reactive
             }
         }
 
-        static IEnumerator FetchText(WWW www, IObserver<string> observer, IProgress<float> reportProgress, CancellationToken cancel)
+        static IEnumerator FetchText(WWW www, UtyRx.IObserver<string> observer, UtyRx.IProgress<float> reportProgress, CancellationToken cancel)
         {
             using (www)
             {
@@ -252,7 +252,7 @@ namespace Assets.Scripts.Environment.Reactive
             }
         }
 
-        static IEnumerator FetchBytes(WWW www, IObserver<byte[]> observer, IProgress<float> reportProgress, CancellationToken cancel)
+        static IEnumerator FetchBytes(WWW www, UtyRx.IObserver<byte[]> observer, UtyRx.IProgress<float> reportProgress, CancellationToken cancel)
         {
             using (www)
             {
@@ -300,7 +300,7 @@ namespace Assets.Scripts.Environment.Reactive
             }
         }
 
-        static IEnumerator FetchAssetBundle(WWW www, IObserver<AssetBundle> observer, IProgress<float> reportProgress, CancellationToken cancel)
+        static IEnumerator FetchAssetBundle(WWW www, UtyRx.IObserver<AssetBundle> observer, UtyRx.IProgress<float> reportProgress, CancellationToken cancel)
         {
             using (www)
             {

@@ -43,7 +43,7 @@ namespace Assets.Scripts.Core.Interop
                 indexPath = _pathResolver.Resolve(indexPath);
 
                 _trace.Debug(TraceCategory, "Configure with {0}", indexPath);
-
+                
                 if (!Directory.Exists(indexPath))
                     throw new DirectoryNotFoundException(String.Format("Cannot find {0}", indexPath));
 
@@ -53,7 +53,7 @@ namespace Assets.Scripts.Core.Interop
 
                 // NOTE Enable mesh caching mechanism for speed up tile loading.
                 enableMeshCache(1);
-
+                
                 _isConfigured = true;
             }
         }
@@ -88,7 +88,7 @@ namespace Assets.Scripts.Core.Interop
         }
 
         /// <inheritdoc />
-        public UtyRx.IObservable<int> AddTo(string storageKey, string path, Stylesheet stylesheet, Range<int> levelOfDetails, CancellationToken cancellationToken)
+        public IObservable<int> AddTo(string storageKey, string path, Stylesheet stylesheet, Range<int> levelOfDetails, CancellationToken cancellationToken)
         {
             var dataPath = _pathResolver.Resolve(path);
             var stylePath = RegisterStylesheet(stylesheet);
@@ -103,7 +103,7 @@ namespace Assets.Scripts.Core.Interop
         }
 
         /// <inheritdoc />
-        public UtyRx.IObservable<int> AddTo(string storageKey, string path, Stylesheet stylesheet, QuadKey quadKey, CancellationToken cancellationToken)
+        public IObservable<int> AddTo(string storageKey, string path, Stylesheet stylesheet, QuadKey quadKey, CancellationToken cancellationToken)
         {
             var dataPath = _pathResolver.Resolve(path);
             var stylePath = RegisterStylesheet(stylesheet);
@@ -118,7 +118,7 @@ namespace Assets.Scripts.Core.Interop
         }
 
         /// <inheritdoc />
-        public UtyRx.IObservable<int> AddTo(string storageKey, Element element, Stylesheet stylesheet, Range<int> levelOfDetails, CancellationToken cancellationToken)
+        public IObservable<int> AddTo(string storageKey, Element element, Stylesheet stylesheet, Range<int> levelOfDetails, CancellationToken cancellationToken)
         {
             _trace.Debug(TraceCategory, "Add element to {0} storage", storageKey);
             double[] coordinates = new double[element.Geometry.Length * 2];
@@ -160,7 +160,7 @@ namespace Assets.Scripts.Core.Interop
 
         #region Private members
 
-        private UtyRx.IObservable<int> Get(Tile tile, int tag, OnMeshBuilt meshBuiltHandler, OnElementLoaded elementLoadedHandler, OnError errorHandler)
+        private IObservable<int> Get(Tile tile, int tag, OnMeshBuilt meshBuiltHandler, OnElementLoaded elementLoadedHandler, OnError errorHandler)
         {
             _trace.Debug(TraceCategory, "Get tile {0}", tile.ToString());
             var stylePath = RegisterStylesheet(tile.Stylesheet);
@@ -173,7 +173,7 @@ namespace Assets.Scripts.Core.Interop
             return Observable.Return(100);
         }
 
-        private UtyRx.IObservable<int> Get(MapQuery query, int tag, OnElementLoaded elementLoadedHandler, OnError errorHandler)
+        private IObservable<int> Get(MapQuery query, int tag, OnElementLoaded elementLoadedHandler, OnError errorHandler)
         {
             _trace.Debug(TraceCategory, "Search elements");
             WithCancelToken(new CancellationToken(), (cancelTokenHandle) => getDataByText(

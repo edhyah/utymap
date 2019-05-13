@@ -80,7 +80,7 @@ namespace Assets.Scripts.Environment.Reactive
 
             void Schedule(object state)
             {
-                var t = (Tuple<BooleanDisposable, Action>)state;
+                var t = (UtyRx.Tuple<BooleanDisposable, Action>)state;
                 if (!t.Item1.IsDisposed)
                 {
                     t.Item2();
@@ -90,7 +90,7 @@ namespace Assets.Scripts.Environment.Reactive
             public IDisposable Schedule(Action action)
             {
                 var d = new BooleanDisposable();
-                MainThreadDispatcher.Post(scheduleAction, Tuple.Create(d, action));
+                MainThreadDispatcher.Post(scheduleAction, UtyRx.Tuple.Create(d, action));
                 return d;
             }
 
@@ -121,7 +121,7 @@ namespace Assets.Scripts.Environment.Reactive
 
             void ScheduleQueueing<T>(object state)
             {
-                var t = (Tuple<ICancelable, T, Action<T>>)state;
+                var t = (UtyRx.Tuple<ICancelable, T, Action<T>>)state;
                 if (!t.Item1.IsDisposed)
                 {
                     t.Item3(t.Item2);
@@ -130,7 +130,7 @@ namespace Assets.Scripts.Environment.Reactive
 
             public void ScheduleQueueing<T>(ICancelable cancel, T state, Action<T> action)
             {
-                MainThreadDispatcher.Post(QueuedAction<T>.Instance, Tuple.Create(cancel, state, action));
+                MainThreadDispatcher.Post(QueuedAction<T>.Instance, UtyRx.Tuple.Create(cancel, state, action));
             }
 
             static class QueuedAction<T>
@@ -139,7 +139,7 @@ namespace Assets.Scripts.Environment.Reactive
 
                 public static void Invoke(object state)
                 {
-                    var t = (Tuple<ICancelable, T, Action<T>>)state;
+                    var t = (UtyRx.Tuple<ICancelable, T, Action<T>>)state;
 
                     if (!t.Item1.IsDisposed)
                     {
@@ -226,7 +226,7 @@ namespace Assets.Scripts.Environment.Reactive
 
             void Schedule(object state)
             {
-                var t = (Tuple<BooleanDisposable, Action>)state;
+                var t = (UtyRx.Tuple<BooleanDisposable, Action>)state;
                 if (!t.Item1.IsDisposed)
                 {
                     t.Item2();
@@ -236,7 +236,7 @@ namespace Assets.Scripts.Environment.Reactive
             public IDisposable Schedule(Action action)
             {
                 var d = new BooleanDisposable();
-                MainThreadDispatcher.Post(scheduleAction, Tuple.Create(d, action));
+                MainThreadDispatcher.Post(scheduleAction, UtyRx.Tuple.Create(d, action));
                 return d;
             }
 
@@ -267,7 +267,7 @@ namespace Assets.Scripts.Environment.Reactive
 
             public void ScheduleQueueing<T>(ICancelable cancel, T state, Action<T> action)
             {
-                MainThreadDispatcher.Post(QueuedAction<T>.Instance, Tuple.Create(cancel, state, action));
+                MainThreadDispatcher.Post(QueuedAction<T>.Instance, UtyRx.Tuple.Create(cancel, state, action));
             }
 
             static class QueuedAction<T>
@@ -276,7 +276,7 @@ namespace Assets.Scripts.Environment.Reactive
 
                 public static void Invoke(object state)
                 {
-                    var t = (Tuple<ICancelable, T, Action<T>>)state;
+                    var t = (UtyRx.Tuple<ICancelable, T, Action<T>>)state;
 
                     if (!t.Item1.IsDisposed)
                     {
@@ -467,7 +467,7 @@ namespace Assets.Scripts.Environment.Reactive
                     {
                         yield return null;
                         if (cancellation.IsDisposed) break;
-                        
+
                         elapsed += Time.deltaTime;
                         if (elapsed >= dt)
                         {
