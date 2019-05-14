@@ -39,7 +39,7 @@ namespace Assets.Scripts.Scenes.Import
         ///    If coordinate is not inside imported map data, then data will be fetched from remote server
         ///    based on level of detail.
         /// </remarks>
-        private readonly GeoCoordinate _coordinate = new GeoCoordinate(52.5317429, 13.3871987);
+        private readonly GeoCoordinate _coordinate = new GeoCoordinate(ThirdPersonBehaviour.StartLatitude, ThirdPersonBehaviour.StartLongitude);
 
         /// <summary> Type of the scene. </summary>
         public SceneType Scene = SceneType.Street;
