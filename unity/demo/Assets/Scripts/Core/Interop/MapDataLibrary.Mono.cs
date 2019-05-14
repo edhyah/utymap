@@ -16,15 +16,15 @@ namespace Assets.Scripts.Core.Interop
         private readonly ITrace _trace;
 
         /// <inheritdoc />
-        public UtyRx.IObservable<int> Get(Tile tile, IList<UtyRx.IObserver<MapData>> observers)
+        public IObservable<int> Get(Tile tile, IList<IObserver<MapData>> observers)
         {
             TileHandler tileHandler = new TileHandler(tile, _materialProvider, observers, _trace);
-            return Get(tile, tile.GetHashCode(), tileHandler.OnMeshBuiltHandler,
+            return Get(tile, tile.GetHashCode(), tileHandler.OnMeshBuiltHandler, 
                 tileHandler.OnElementLoadedHandler, OnErrorHandler);
         }
 
         /// <inheritdoc />
-        public UtyRx.IObservable<int> Get(MapQuery query, IList<UtyRx.IObserver<Element>> observers)
+        public IObservable<int> Get(MapQuery query, IList<IObserver<Element>> observers)
         {
             var queryHandler = new QueryHandler(observers);
             return Get(query, 0, queryHandler.OnElementLoadedHandler, OnErrorHandler);
@@ -70,10 +70,10 @@ namespace Assets.Scripts.Core.Interop
         {
             private readonly Tile _tile;
             private readonly MaterialProvider _materialProvider;
-            private readonly IList<UtyRx.IObserver<MapData>> _observers;
+            private readonly IList<IObserver<MapData>> _observers;
             private readonly ITrace _trace;
 
-            public TileHandler(Tile tile, MaterialProvider materialProvider, IList<UtyRx.IObserver<MapData>> observers, ITrace trace)
+            public TileHandler(Tile tile, MaterialProvider materialProvider, IList<IObserver<MapData>> observers, ITrace trace)
             {
                 _tile = tile;
                 _materialProvider = materialProvider;
@@ -97,9 +97,9 @@ namespace Assets.Scripts.Core.Interop
 
         private class QueryHandler
         {
-            private readonly IList<UtyRx.IObserver<Element>> _observers;
+            private readonly IList<IObserver<Element>> _observers;
 
-            public QueryHandler(IList<UtyRx.IObserver<Element>> observers)
+            public QueryHandler(IList<IObserver<Element>> observers)
             {
                 _observers = observers;
             }
@@ -112,7 +112,7 @@ namespace Assets.Scripts.Core.Interop
                     observer.OnNext(element);
             }
         }
-
+     
         #endregion
 
 #endif

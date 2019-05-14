@@ -41,13 +41,13 @@ namespace Assets.Scripts.Environment.Reactive
             typeof(Coroutine)
         };
 
-        /// <summary>From has no callback coroutine to UtyRx.IObservable. If publishEveryYield = true then publish OnNext every yield return else return once on enumeration completed.</summary>
-        public static UtyRx.IObservable<Unit> FromCoroutine(Func<IEnumerator> coroutine, bool publishEveryYield = false)
+        /// <summary>From has no callback coroutine to IObservable. If publishEveryYield = true then publish OnNext every yield return else return once on enumeration completed.</summary>
+        public static IObservable<Unit> FromCoroutine(Func<IEnumerator> coroutine, bool publishEveryYield = false)
         {
             return FromCoroutine<Unit>((observer, cancellationToken) => WrapEnumerator(coroutine(), observer, cancellationToken, publishEveryYield));
         }
 
-        static IEnumerator WrapEnumerator(IEnumerator enumerator, UtyRx.IObserver<Unit> observer, CancellationToken cancellationToken, bool publishEveryYield)
+        static IEnumerator WrapEnumerator(IEnumerator enumerator, IObserver<Unit> observer, CancellationToken cancellationToken, bool publishEveryYield)
         {
             var hasNext = default(bool);
             var raisedError = false;
@@ -114,13 +114,13 @@ namespace Assets.Scripts.Environment.Reactive
             }
         }
 
-        /// <summary>Convert coroutine to typed UtyRx.IObservable. If nullAsNextUpdate = true then yield return null when Enumerator.Current and no null publish observer.OnNext.</summary>
-        public static UtyRx.IObservable<T> FromCoroutineValue<T>(Func<IEnumerator> coroutine, bool nullAsNextUpdate = true)
+        /// <summary>Convert coroutine to typed IObservable. If nullAsNextUpdate = true then yield return null when Enumerator.Current and no null publish observer.OnNext.</summary>
+        public static IObservable<T> FromCoroutineValue<T>(Func<IEnumerator> coroutine, bool nullAsNextUpdate = true)
         {
             return FromCoroutine<T>((observer, cancellationToken) => WrapEnumeratorYieldValue<T>(coroutine(), observer, cancellationToken, nullAsNextUpdate));
         }
 
-        static IEnumerator WrapEnumeratorYieldValue<T>(IEnumerator enumerator, UtyRx.IObserver<T> observer, CancellationToken cancellationToken, bool nullAsNextUpdate)
+        static IEnumerator WrapEnumeratorYieldValue<T>(IEnumerator enumerator, IObserver<T> observer, CancellationToken cancellationToken, bool nullAsNextUpdate)
         {
             var hasNext = default(bool);
             var current = default(object);
@@ -196,12 +196,12 @@ namespace Assets.Scripts.Environment.Reactive
             }
         }
 
-        public static UtyRx.IObservable<T> FromCoroutine<T>(Func<UtyRx.IObserver<T>, IEnumerator> coroutine)
+        public static IObservable<T> FromCoroutine<T>(Func<IObserver<T>, IEnumerator> coroutine)
         {
             return FromCoroutine<T>((observer, _) => coroutine(observer));
         }
 
-        public static UtyRx.IObservable<T> FromCoroutine<T>(Func<UtyRx.IObserver<T>, CancellationToken, IEnumerator> coroutine)
+        public static IObservable<T> FromCoroutine<T>(Func<IObserver<T>, CancellationToken, IEnumerator> coroutine)
         {
             return Observable.Create<T>(observer =>
             {
@@ -213,12 +213,12 @@ namespace Assets.Scripts.Environment.Reactive
             });
         }
 
-        public static UtyRx.IObservable<Unit> SelectMany<T>(this UtyRx.IObservable<T> source, IEnumerator coroutine, bool publishEveryYield = false)
+        public static IObservable<Unit> SelectMany<T>(this IObservable<T> source, IEnumerator coroutine, bool publishEveryYield = false)
         {
             return source.SelectMany(FromCoroutine(() => coroutine, publishEveryYield));
         }
 
-        public static UtyRx.IObservable<Unit> SelectMany<T>(this UtyRx.IObservable<T> source, Func<IEnumerator> selector, bool publishEveryYield = false)
+        public static IObservable<Unit> SelectMany<T>(this IObservable<T> source, Func<IEnumerator> selector, bool publishEveryYield = false)
         {
             return source.SelectMany(FromCoroutine(() => selector(), publishEveryYield));
         }
@@ -226,12 +226,12 @@ namespace Assets.Scripts.Environment.Reactive
         /// <summary>
         /// Note: publishEveryYield is always false. If you want to set true, use Observable.FromCoroutine(() => selector(x), true). This is workaround of Unity compiler's bug.
         /// </summary>
-        public static UtyRx.IObservable<Unit> SelectMany<T>(this UtyRx.IObservable<T> source, Func<T, IEnumerator> selector)
+        public static IObservable<Unit> SelectMany<T>(this IObservable<T> source, Func<T, IEnumerator> selector)
         {
             return source.SelectMany(x => FromCoroutine(() => selector(x), false));
         }
 
-        public static UtyRx.IObservable<Unit> ToObservable(this IEnumerator coroutine, bool publishEveryYield = false)
+        public static IObservable<Unit> ToObservable(this IEnumerator coroutine, bool publishEveryYield = false)
         {
             return FromCoroutine<Unit>((observer, cancellationToken) => WrapEnumerator(coroutine, observer, cancellationToken, publishEveryYield));
         }

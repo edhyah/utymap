@@ -22,9 +22,9 @@ namespace Assets.Scripts.Core.Interop
         private static readonly Regex ElementNameRegex = new Regex("^(building):([0-9]*)");
         private const int VertexLimit = 64998;
         private const string TraceCategory = "mapdata.loader";
-
+        
         /// <summary> Adapts mesh data received in raw form. </summary>
-        public static void AdaptMesh(Tile tile, MaterialProvider materialProvider, IList<UtyRx.IObserver<MapData>> observers, ITrace trace,
+        public static void AdaptMesh(Tile tile, MaterialProvider materialProvider, IList<IObserver<MapData>> observers, ITrace trace,
             string name, double[] vertices, int[] triangles, int[] colors, double[] uvs, int[] uvMap)
         {
             Vector3[] worldPoints;
@@ -38,17 +38,17 @@ namespace Assets.Scripts.Core.Interop
             // triangles to share the same vertex. Remove "if" branch if you don't need it
             bool isCreated = name.Contains("terrain")
                 ? BuildTerrainMesh(tile, materialProvider, name, vertices, triangles, colors, uvs, uvMap,
-                    out worldPoints, out unityColors, out textureIndex, out unityUvs, out unityUvs2, out unityUvs3)
+                    out worldPoints, out unityColors,  out textureIndex, out unityUvs, out unityUvs2, out unityUvs3)
                 : BuildObjectMesh(tile, materialProvider, name, vertices, triangles, colors, uvs, uvMap,
                     out worldPoints, out unityColors, out textureIndex, out unityUvs, out unityUvs2, out unityUvs3);
 
             if (isCreated)
-                BuildMesh(tile, observers, trace, name, worldPoints, triangles, unityColors,
+                BuildMesh(tile, observers, trace, name, worldPoints, triangles, unityColors, 
                     textureIndex, unityUvs, unityUvs2, unityUvs3);
         }
 
         /// <summary> Adapts element data received in raw form. </summary>
-        public static void AdaptElement(Tile tile, MaterialProvider materialProvider, IList<UtyRx.IObserver<MapData>> observers, ITrace trace,
+        public static void AdaptElement(Tile tile, MaterialProvider materialProvider, IList<IObserver<MapData>> observers, ITrace trace, 
             long id, double[] vertices, string[] tags, string[] styles)
         {
             Element element = AdaptElement(id, tags, vertices, styles);
@@ -129,7 +129,7 @@ namespace Assets.Scripts.Core.Interop
             unityColors = new Color[colorCount];
             for (int i = 0; i < colorCount; ++i)
                 unityColors[i] = ColorUtils.FromInt(colors[i]);
-
+            
             if (uvCount > 0)
             {
                 var textureMapper = CreateTextureAtlasMapper(uvCount / 2, uvs, uvMap, materialProvider);
@@ -184,7 +184,7 @@ namespace Assets.Scripts.Core.Interop
             const int infoEntrySize = 8;
             var count = uvMap == null ? 0 : uvMap.Length;
             List<TextureAtlasInfo> infos = new List<TextureAtlasInfo>(count / infoEntrySize);
-            for (int i = 0; i < count;)
+            for (int i = 0; i < count; )
             {
                 var info = new TextureAtlasInfo();
                 info.UvIndexRange = new Range<int>(!infos.Any() ? 0 : infos.Last().UvIndexRange.Maximum, uvMap[i++]);
@@ -212,7 +212,7 @@ namespace Assets.Scripts.Core.Interop
 
         /// <summary> Builds mesh object and notifies observers. </summary>
         /// <remarks> Unity has vertex count limit and spliiting meshes here is quite expensive operation. </remarks>
-        private static void BuildMesh(Tile tile, IList<UtyRx.IObserver<MapData>> observers, ITrace trace,
+        private static void BuildMesh(Tile tile, IList<IObserver<MapData>> observers, ITrace trace,
             string name, Vector3[] worldPoints, int[] triangles, Color[] unityColors, int textureIndex,
             Vector2[] unityUvs, Vector2[] unityUvs2, Vector2[] unityUvs3)
         {
@@ -232,12 +232,12 @@ namespace Assets.Scripts.Core.Interop
                 return;
             }
 
-            int parts = (int)Math.Ceiling((float)worldPoints.Length / VertexLimit);
+            int parts = (int) Math.Ceiling((float) worldPoints.Length / VertexLimit);
             for (int i = 0; i < parts; ++i)
             {
                 var start = i * VertexLimit;
                 var end = Math.Min(start + VertexLimit, worldPoints.Length);
-                Mesh mesh = new Mesh(name + i, textureIndex,
+                Mesh mesh = new Mesh(name + i, textureIndex, 
                     worldPoints.Skip(start).Take(end - start).ToArray(),
                     i == 0
                         ? triangles.Skip(start).Take(end - start).ToArray()
@@ -250,13 +250,13 @@ namespace Assets.Scripts.Core.Interop
             }
         }
 
-        private static void NotifyObservers(MapData mapData, IList<UtyRx.IObserver<MapData>> observers)
+        private static void NotifyObservers(MapData mapData, IList<IObserver<MapData>> observers)
         {
             foreach (var observer in observers)
                 observer.OnNext(mapData);
         }
 
-        private static void NotifyObservers(Exception ex, IList<UtyRx.IObserver<MapData>> observers)
+        private static void NotifyObservers(Exception ex, IList<IObserver<MapData>> observers)
         {
             foreach (var observer in observers)
                 observer.OnError(ex);

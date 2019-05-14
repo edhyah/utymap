@@ -681,7 +681,7 @@ namespace Assets.Scripts.Environment.Reactive
 
         Subject<Unit> update;
 
-        public static UtyRx.IObservable<Unit> UpdateAsObservable()
+        public static IObservable<Unit> UpdateAsObservable()
         {
             return Instance.update ?? (Instance.update = new Subject<Unit>());
         }
@@ -693,7 +693,7 @@ namespace Assets.Scripts.Environment.Reactive
             if (lateUpdate != null) lateUpdate.OnNext(Unit.Default);
         }
 
-        public static UtyRx.IObservable<Unit> LateUpdateAsObservable()
+        public static IObservable<Unit> LateUpdateAsObservable()
         {
             return Instance.lateUpdate ?? (Instance.lateUpdate = new Subject<Unit>());
         }
@@ -705,7 +705,7 @@ namespace Assets.Scripts.Environment.Reactive
             if (onApplicationFocus != null) onApplicationFocus.OnNext(focus);
         }
 
-        public static UtyRx.IObservable<bool> OnApplicationFocusAsObservable()
+        public static IObservable<bool> OnApplicationFocusAsObservable()
         {
             return Instance.onApplicationFocus ?? (Instance.onApplicationFocus = new Subject<bool>());
         }
@@ -717,7 +717,7 @@ namespace Assets.Scripts.Environment.Reactive
             if (onApplicationPause != null) onApplicationPause.OnNext(pause);
         }
 
-        public static UtyRx.IObservable<bool> OnApplicationPauseAsObservable()
+        public static IObservable<bool> OnApplicationPauseAsObservable()
         {
             return Instance.onApplicationPause ?? (Instance.onApplicationPause = new Subject<bool>());
         }
@@ -730,7 +730,7 @@ namespace Assets.Scripts.Environment.Reactive
             if (onApplicationQuit != null) onApplicationQuit.OnNext(Unit.Default);
         }
 
-        public static UtyRx.IObservable<Unit> OnApplicationQuitAsObservable()
+        public static IObservable<Unit> OnApplicationQuitAsObservable()
         {
             return Instance.onApplicationQuit ?? (Instance.onApplicationQuit = new Subject<Unit>());
         }

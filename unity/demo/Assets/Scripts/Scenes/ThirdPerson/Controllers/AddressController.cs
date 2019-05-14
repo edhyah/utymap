@@ -41,7 +41,7 @@ namespace Assets.Scripts.Scenes.ThirdPerson.Controllers
             _position = position;
             _coordinate = GeoUtils.ToGeoCoordinate(relativeNullPoint, position.x, position.z);
 
-            _geocoder.OnNext(new UtyRx.Tuple<GeoCoordinate, float>(_coordinate, SearchSize));
+            _geocoder.OnNext(new Tuple<GeoCoordinate, float>(_coordinate, SearchSize));
         }
 
         private void ProcessResult(GeocoderResult result)
