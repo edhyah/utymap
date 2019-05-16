@@ -38,7 +38,8 @@ namespace UtyMap.Unity.Data.Providers.Geo
         {
             var padding = 0.001;
             var query = GeoUtils.QuadKeyToBoundingBox(quadKey);
-            var queryString = String.Format(_mapDataServerQuery,
+            var queryString = String.Format(System.Globalization.CultureInfo.GetCultureInfo("en-US"),
+                _mapDataServerQuery,
                 query.MinPoint.Latitude - padding, query.MinPoint.Longitude - padding,
                 query.MaxPoint.Latitude + padding, query.MaxPoint.Longitude + padding);
             return String.Format("{0}{1}", _mapDataServerUri, Uri.EscapeDataString(queryString));

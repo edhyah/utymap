@@ -23,8 +23,8 @@ public class ThirdPersonBehaviour : MonoBehaviour
 
     public GameObject Text;
 
-    public double StartLatitude = 52.5317429;
-    public double StartLongitude = 13.3871987;
+    public static double StartLatitude = 52.5317429;
+    public static double StartLongitude = 13.3871987;
 
     private CompositionRoot _compositionRoot;
 

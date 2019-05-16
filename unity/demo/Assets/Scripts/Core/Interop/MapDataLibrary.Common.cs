@@ -88,7 +88,7 @@ namespace Assets.Scripts.Core.Interop
         }
 
         /// <inheritdoc />
-        public IObservable<int> AddTo(string storageKey, string path, Stylesheet stylesheet, Range<int> levelOfDetails, CancellationToken cancellationToken)
+        public UtyRx.IObservable<int> AddTo(string storageKey, string path, Stylesheet stylesheet, Range<int> levelOfDetails, CancellationToken cancellationToken)
         {
             var dataPath = _pathResolver.Resolve(path);
             var stylePath = RegisterStylesheet(stylesheet);
@@ -103,7 +103,7 @@ namespace Assets.Scripts.Core.Interop
         }
 
         /// <inheritdoc />
-        public IObservable<int> AddTo(string storageKey, string path, Stylesheet stylesheet, QuadKey quadKey, CancellationToken cancellationToken)
+        public UtyRx.IObservable<int> AddTo(string storageKey, string path, Stylesheet stylesheet, QuadKey quadKey, CancellationToken cancellationToken)
         {
             var dataPath = _pathResolver.Resolve(path);
             var stylePath = RegisterStylesheet(stylesheet);
@@ -118,7 +118,7 @@ namespace Assets.Scripts.Core.Interop
         }
 
         /// <inheritdoc />
-        public IObservable<int> AddTo(string storageKey, Element element, Stylesheet stylesheet, Range<int> levelOfDetails, CancellationToken cancellationToken)
+        public UtyRx.IObservable<int> AddTo(string storageKey, Element element, Stylesheet stylesheet, Range<int> levelOfDetails, CancellationToken cancellationToken)
         {
             _trace.Debug(TraceCategory, "Add element to {0} storage", storageKey);
             double[] coordinates = new double[element.Geometry.Length * 2];
@@ -160,7 +160,7 @@ namespace Assets.Scripts.Core.Interop
 
         #region Private members
 
-        private IObservable<int> Get(Tile tile, int tag, OnMeshBuilt meshBuiltHandler, OnElementLoaded elementLoadedHandler, OnError errorHandler)
+        private UtyRx.IObservable<int> Get(Tile tile, int tag, OnMeshBuilt meshBuiltHandler, OnElementLoaded elementLoadedHandler, OnError errorHandler)
         {
             _trace.Debug(TraceCategory, "Get tile {0}", tile.ToString());
             var stylePath = RegisterStylesheet(tile.Stylesheet);
@@ -173,7 +173,7 @@ namespace Assets.Scripts.Core.Interop
             return Observable.Return(100);
         }
 
-        private IObservable<int> Get(MapQuery query, int tag, OnElementLoaded elementLoadedHandler, OnError errorHandler)
+        private UtyRx.IObservable<int> Get(MapQuery query, int tag, OnElementLoaded elementLoadedHandler, OnError errorHandler)
         {
             _trace.Debug(TraceCategory, "Search elements");
             WithCancelToken(new CancellationToken(), (cancelTokenHandle) => getDataByText(

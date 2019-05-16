@@ -22,7 +22,7 @@ namespace Assets.Scripts.Scenes.Search
         private const string MapDataPath = @"../../../../core/test/test_assets/osm/berlin.osm.xml";
 
         /// <summary> Start coordinate: Unity's world zero point. </summary>
-        private readonly GeoCoordinate _coordinate = new GeoCoordinate(52.5317429, 13.3871987);
+        private readonly GeoCoordinate _coordinate = new GeoCoordinate(ThirdPersonBehaviour.StartLatitude, ThirdPersonBehaviour.StartLongitude);
         /// <summary> Range to load. </summary>
         private readonly Range<int> _range = new Range<int>(16, 16);
 

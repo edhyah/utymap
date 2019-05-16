@@ -24,7 +24,7 @@ namespace Assets.Scripts.Core.Interop
         private const string TraceCategory = "mapdata.loader";
         
         /// <summary> Adapts mesh data received in raw form. </summary>
-        public static void AdaptMesh(Tile tile, MaterialProvider materialProvider, IList<IObserver<MapData>> observers, ITrace trace,
+        public static void AdaptMesh(Tile tile, MaterialProvider materialProvider, IList<UtyRx.IObserver<MapData>> observers, ITrace trace,
             string name, double[] vertices, int[] triangles, int[] colors, double[] uvs, int[] uvMap)
         {
             Vector3[] worldPoints;
@@ -48,7 +48,7 @@ namespace Assets.Scripts.Core.Interop
         }
 
         /// <summary> Adapts element data received in raw form. </summary>
-        public static void AdaptElement(Tile tile, MaterialProvider materialProvider, IList<IObserver<MapData>> observers, ITrace trace, 
+        public static void AdaptElement(Tile tile, MaterialProvider materialProvider, IList<UtyRx.IObserver<MapData>> observers, ITrace trace,
             long id, double[] vertices, string[] tags, string[] styles)
         {
             Element element = AdaptElement(id, tags, vertices, styles);
@@ -212,7 +212,7 @@ namespace Assets.Scripts.Core.Interop
 
         /// <summary> Builds mesh object and notifies observers. </summary>
         /// <remarks> Unity has vertex count limit and spliiting meshes here is quite expensive operation. </remarks>
-        private static void BuildMesh(Tile tile, IList<IObserver<MapData>> observers, ITrace trace,
+        private static void BuildMesh(Tile tile, IList<UtyRx.IObserver<MapData>> observers, ITrace trace,
             string name, Vector3[] worldPoints, int[] triangles, Color[] unityColors, int textureIndex,
             Vector2[] unityUvs, Vector2[] unityUvs2, Vector2[] unityUvs3)
         {
@@ -250,13 +250,13 @@ namespace Assets.Scripts.Core.Interop
             }
         }
 
-        private static void NotifyObservers(MapData mapData, IList<IObserver<MapData>> observers)
+        private static void NotifyObservers(MapData mapData, IList<UtyRx.IObserver<MapData>> observers)
         {
             foreach (var observer in observers)
                 observer.OnNext(mapData);
         }
 
-        private static void NotifyObservers(Exception ex, IList<IObserver<MapData>> observers)
+        private static void NotifyObservers(Exception ex, IList<UtyRx.IObserver<MapData>> observers)
         {
             foreach (var observer in observers)
                 observer.OnError(ex);
