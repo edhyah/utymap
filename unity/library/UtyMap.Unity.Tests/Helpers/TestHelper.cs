@@ -84,9 +84,9 @@ namespace UtyMap.Unity.Tests.Helpers
             return mapData;
         }
 
-        public static Tuple<Tile, string> GetResultSync(this ISubject<Tile, Tuple<Tile, string>> source, Tile tile)
+        public static UtyRx.Tuple<Tile, string> GetResultSync(this ISubject<Tile, UtyRx.Tuple<Tile, string>> source, Tile tile)
         {
-            var result = default(Tuple<Tile, string>);
+            var result = default(UtyRx.Tuple<Tile, string>);
             var manualResetEvent = new ManualResetEvent(false);
             source
                 .Subscribe(r =>

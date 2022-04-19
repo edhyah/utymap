@@ -66,7 +66,7 @@ namespace UtyMap.Unity.Data.Providers
             {
                 if (value.ElevationType == ElevationDataType.Flat)
                 {
-                    Notify(new Tuple<Tile, string>(value, ""));
+                    Notify(new UtyRx.Tuple<Tile, string>(value, ""));
                     return;
                 }
                 
@@ -109,7 +109,7 @@ namespace UtyMap.Unity.Data.Providers
             {
                 if (_mapDataLibrary.Exists(value.QuadKey))
                 {
-                    Notify(new Tuple<Tile, string>(value, ""));
+                    Notify(new UtyRx.Tuple<Tile, string>(value, ""));
                     return;
                 }
 

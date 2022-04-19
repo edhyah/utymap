@@ -15,7 +15,7 @@ namespace UtyMap.Unity.Geocoding
         private readonly string _andTerms = "addr street housenumber";
         private readonly string _orTerms = "";
 
-        private readonly List<IObserver<GeocoderResult>> _observers = new List<IObserver<GeocoderResult>>();
+        private readonly List<UtyRx.IObserver<GeocoderResult>> _observers = new List<UtyRx.IObserver<GeocoderResult>>();
         private readonly IDisposable _subscription;
 
         /// <summary> Expected address tags. </summary>
@@ -38,44 +38,44 @@ namespace UtyMap.Unity.Geocoding
         }
 
         /// <inheritdoc />
-        public IDisposable Subscribe(IObserver<GeocoderResult> observer)
+        public IDisposable Subscribe(UtyRx.IObserver<GeocoderResult> observer)
         {
             _observers.Add(observer);
             return Disposable.Empty;
         }
 
         /// <inheritdoc />
-        void IObserver<Tuple<string, BoundingBox>>.OnCompleted()
+        void UtyRx.IObserver<UtyRx.Tuple<string, BoundingBox>>.OnCompleted()
         {
             _observers.Clear();
         }
 
         /// <inheritdoc />
-        void IObserver<Tuple<string, BoundingBox>>.OnError(Exception error)
+        void UtyRx.IObserver<UtyRx.Tuple<string, BoundingBox>>.OnError(Exception error)
         {
             // Ignore
         }
 
         /// <inheritdoc />
-        void IObserver<Tuple<GeoCoordinate, float>>.OnCompleted()
+        void UtyRx.IObserver<UtyRx.Tuple<GeoCoordinate, float>>.OnCompleted()
         {
             _observers.Clear();
         }
 
         /// <inheritdoc />
-        void IObserver<Tuple<GeoCoordinate, float>>.OnError(Exception error)
+        void UtyRx.IObserver<UtyRx.Tuple<GeoCoordinate, float>>.OnError(Exception error)
         {
             // Ignore
         }
 
         /// <inheritdoc />
-        public void OnNext(Tuple<string, BoundingBox> value)
+        public void OnNext(UtyRx.Tuple<string, BoundingBox> value)
         {
             _dataStore.OnNext(new MapQuery("", "", value.Item1, value.Item2, _searchRange));
         }
 
         /// <inheritdoc />
-        public void OnNext(Tuple<GeoCoordinate, float> value)
+        public void OnNext(UtyRx.Tuple<GeoCoordinate, float> value)
         {
             _dataStore.OnNext(new MapQuery(_notTerms, _andTerms, _orTerms,
                 BoundingBox.Create(value.Item1, value.Item2), _searchRange));

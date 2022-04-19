@@ -5,9 +5,9 @@ namespace UtyMap.Unity.Geocoding
 {
     /// <summary> Defines geocoder API (including reverse). </summary>
     public interface IGeocoder :
-        IObservable<GeocoderResult>,
-        IObserver<Tuple<string, BoundingBox>>, // place description and bbox restriction
-        IObserver<Tuple<GeoCoordinate, float>>, // place coordinate and surrounding bbox size restriction (in meters)
+        UtyRx.IObservable<GeocoderResult>,
+        UtyRx.IObserver<UtyRx.Tuple<string, BoundingBox>>, // place description and bbox restriction
+        UtyRx.IObserver<UtyRx.Tuple<GeoCoordinate, float>>, // place coordinate and surrounding bbox size restriction (in meters)
         IDisposable
     {
     }

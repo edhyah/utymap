@@ -1,5 +1,16 @@
 # Build instructions
 
+## Update (Ubuntu 18)
+
+- Use Unity 2017
+- Don't add any repository ppas
+- Install libboost-all-dev, and same for all other packages
+- Build core library and copy
+- Install mono-xbuild (installs xbuild command), mono-complete (removes build
+  fail with 0 errors 0 warnings)
+- Change target framework to 4.5 in csproj
+- Build unity library in library folder using command `xbuild /p:Configuration=Release UtyMap.Unity.sln /p:TargetFrameworkVersion="v4.6"`
+
 ## Table of content
 
 - [Build using release artifacts](#build-using-release-artifacts)

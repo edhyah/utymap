@@ -9,7 +9,7 @@ namespace UtyMap.Unity.Infrastructure.IO
     internal class NetworkService : INetworkService
     {
         /// <inheritdoc />
-        public IObservable<string> Get(string url, Dictionary<string, string> headers = null)
+        public UtyRx.IObservable<string> Get(string url, Dictionary<string, string> headers = null)
         {
             var webClient = new WebClient();
             var query = Observable
@@ -27,7 +27,7 @@ namespace UtyMap.Unity.Infrastructure.IO
         }
 
         /// <inheritdoc />
-        public IObservable<byte[]> GetAndGetBytes(string url, Dictionary<string, string> headers = null)
+        public UtyRx.IObservable<byte[]> GetAndGetBytes(string url, Dictionary<string, string> headers = null)
         {
             var webClient = new WebClient();
             var query = Observable.FromEventPattern<DownloadDataCompletedEventHandler, DownloadDataCompletedEventArgs>

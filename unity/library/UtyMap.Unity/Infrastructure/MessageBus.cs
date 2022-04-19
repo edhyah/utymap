@@ -14,7 +14,7 @@ namespace UtyMap.Unity.Infrastructure
         /// <summary> Returns observable message pipe of given type. </summary>
         /// <typeparam name="T"> Type. </typeparam>
         /// <returns> Observable message pipe. </returns>
-        IObservable<T> AsObservable<T>();
+        UtyRx.IObservable<T> AsObservable<T>();
     }
 
     /// <summary> Creates reactive extensions based message bus. </summary>
@@ -35,7 +35,7 @@ namespace UtyMap.Unity.Infrastructure
         }
 
         /// <inheritdoc />
-        public IObservable<T> AsObservable<T>()
+        public UtyRx.IObservable<T> AsObservable<T>()
         {
             return _messageSubject.OfType<object, T>();
         }

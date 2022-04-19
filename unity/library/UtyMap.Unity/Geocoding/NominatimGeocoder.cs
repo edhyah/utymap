@@ -28,7 +28,7 @@ namespace UtyMap.Unity.Geocoding
         private string _searchPath;
         private string _reverseSearchPath;
 
-        private List<IObserver<GeocoderResult>> _observers = new List<IObserver<GeocoderResult>>();
+        private List<UtyRx.IObserver<GeocoderResult>> _observers = new List<UtyRx.IObserver<GeocoderResult>>();
 
         [Dependency]
         public NominatimGeocoder(INetworkService networkService)
@@ -37,38 +37,38 @@ namespace UtyMap.Unity.Geocoding
         }
 
         /// <inheritdoc />
-        public IDisposable Subscribe(IObserver<GeocoderResult> observer)
+        public IDisposable Subscribe(UtyRx.IObserver<GeocoderResult> observer)
         {
             _observers.Add(observer);
             return Disposable.Empty;
         }
 
         /// <inheritdoc />
-        void IObserver<Tuple<string, BoundingBox>>.OnCompleted()
+        void UtyRx.IObserver<UtyRx.Tuple<string, BoundingBox>>.OnCompleted()
         {
             _observers.Clear();
         }
 
         /// <inheritdoc />
-        void IObserver<Tuple<string, BoundingBox>>.OnError(Exception error)
+        void UtyRx.IObserver<UtyRx.Tuple<string, BoundingBox>>.OnError(Exception error)
         {
             // Ignore
         }
 
         /// <inheritdoc />
-        void IObserver<Tuple<GeoCoordinate, float>>.OnCompleted()
+        void UtyRx.IObserver<UtyRx.Tuple<GeoCoordinate, float>>.OnCompleted()
         {
             _observers.Clear();
         }
 
         /// <inheritdoc />
-        void IObserver<Tuple<GeoCoordinate, float>>.OnError(Exception error)
+        void UtyRx.IObserver<UtyRx.Tuple<GeoCoordinate, float>>.OnError(Exception error)
         {
             // Ignore
         }
 
         /// <inheritdoc />
-        public void OnNext(Tuple<string, BoundingBox> value)
+        public void OnNext(UtyRx.Tuple<string, BoundingBox> value)
         {
             var name = value.Item1;
             var area = value.Item2;
@@ -95,7 +95,7 @@ namespace UtyMap.Unity.Geocoding
         }
 
         /// <inheritdoc />
-        public void OnNext(Tuple<GeoCoordinate, float> value)
+        public void OnNext(UtyRx.Tuple<GeoCoordinate, float> value)
         {
             var coordinate = value.Item1;
             var url = String.Format("{0}format=json&lat={1}&lon={2}",

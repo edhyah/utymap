@@ -10,14 +10,14 @@ using UtyRx;
 namespace UtyMap.Unity.Data
 {
     /// <summary> Provides file path to map data. </summary>
-    public interface IMapDataProvider : ISubject<Tile, Tuple<Tile, string>>, IConfigurable
+    public interface IMapDataProvider : ISubject<Tile, UtyRx.Tuple<Tile, string>>, IConfigurable
     {
     }
 
     /// <summary> Generalzes subscription processing. </summary>
     internal abstract class MapDataProvider : IMapDataProvider
     {
-        private readonly List<IObserver<Tuple<Tile, string>>> _observers = new List<IObserver<Tuple<Tile, string>>>();
+        private readonly List<UtyRx.IObserver<UtyRx.Tuple<Tile, string>>> _observers = new List<UtyRx.IObserver<UtyRx.Tuple<Tile, string>>>();
 
         public abstract void OnNext(Tile value);
         public abstract void Configure(IConfigSection configSection);
@@ -32,7 +32,7 @@ namespace UtyMap.Unity.Data
             _observers.ForEach(o => o.OnError(error));
         }
 
-        public virtual IDisposable Subscribe(IObserver<Tuple<Tile, string>> observer)
+        public virtual IDisposable Subscribe(UtyRx.IObserver<UtyRx.Tuple<Tile, string>> observer)
         {
             // TODO handle unsubscribe
             _observers.Add(observer);
@@ -40,7 +40,7 @@ namespace UtyMap.Unity.Data
         }
 
         /// <summary> Notifies observers. </summary>
-        protected void Notify(Tuple<Tile, string> value)
+        protected void Notify(UtyRx.Tuple<Tile, string> value)
         {
             _observers.ForEach(o => o.OnNext(value));
         }
@@ -82,7 +82,7 @@ namespace UtyMap.Unity.Data
             lock (_lockObj)
                 if (_fileSystemService.Exists(filePath))
                 {
-                    Notify(new Tuple<Tile, string>(value, filePath));
+                    Notify(new UtyRx.Tuple<Tile, string>(value, filePath));
                     return;
                 }
 
@@ -134,7 +134,7 @@ namespace UtyMap.Unity.Data
                             using (var stream = _fileSystemService.WriteStream(filePath))
                                 WriteBytes(stream, bytes);
                     }
-                    Notify(new Tuple<Tile, string>(value, filePath));
+                    Notify(new UtyRx.Tuple<Tile, string>(value, filePath));
                 });
         }
     }
