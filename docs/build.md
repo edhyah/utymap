@@ -10,6 +10,8 @@
   fail with 0 errors 0 warnings)
 - Change target framework to 4.5 in csproj
 - Build unity library in library folder using command `xbuild /p:Configuration=Release UtyMap.Unity.sln /p:TargetFrameworkVersion="v4.6"`
+- Change player settings (in build settings) scripting runtime version to
+  experimental (.NET 4.6 equivalent) to use unity library
 
 ## Table of content
 
